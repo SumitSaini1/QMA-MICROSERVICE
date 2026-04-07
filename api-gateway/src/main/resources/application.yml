@@ -1,0 +1,68 @@
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
+
+        - id: quantity-service
+          uri: lb://QUANTITY-SERVICE
+          predicates:
+            - Path=/api/quantity/**
+
+        - id: auth-service-api-docs
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/aggregate/auth-service/v3/api-docs
+          filters:
+            - RewritePath=/aggregate/auth-service/v3/api-docs, /v3/api-docs
+
+        - id: quantity-service-api-docs
+          uri: lb://QUANTITY-SERVICE
+          predicates:
+            - Path=/aggregate/quantity-service/v3/api-docs
+          filters:
+            - RewritePath=/aggregate/quantity-service/v3/api-docs, /v3/api-docs
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration
+      - org.springframework.boot.autoconfigure.security.reactive.ReactiveUserDetailsServiceAutoConfiguration
+
+server:
+  port: 8080
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    disable-swagger-default-url: true
+    urls:
+      - name: auth-service
+        url: /aggregate/auth-service/v3/api-docs
+      - name: quantity-service
+        url: /aggregate/quantity-service/v3/api-docs
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

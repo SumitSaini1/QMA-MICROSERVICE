@@ -1,12 +1,14 @@
 spring:
   application:
     name: API-GATEWAY
+
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true
           lower-case-service-id: true
+
       routes:
         - id: auth-service
           uri: lb://AUTH-SERVICE
@@ -32,6 +34,19 @@ spring:
           filters:
             - RewritePath=/aggregate/quantity-service/v3/api-docs, /v3/api-docs
 
+      
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration
@@ -50,16 +65,15 @@ eureka:
 springdoc:
   swagger-ui:
     path: /swagger-ui.html
-    config-url: /v3/api-docs/swagger-config
     disable-swagger-default-url: true
     urls:
       - name: auth-service
         url: /aggregate/auth-service/v3/api-docs
       - name: quantity-service
         url: /aggregate/quantity-service/v3/api-docs
+
   api-docs:
     path: /v3/api-docs
-    enabled: true
 
 management:
   endpoints:

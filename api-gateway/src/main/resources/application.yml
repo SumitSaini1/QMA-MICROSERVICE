@@ -9,7 +9,8 @@ spring:
           enabled: true
           lower-case-service-id: true
 
-      
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
 
       routes:
         - id: auth-service

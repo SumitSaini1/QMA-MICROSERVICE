@@ -16,7 +16,9 @@ public class CorsConfig {
        
         config.setAllowedOriginPatterns(List.of(
             "http://localhost:4200",                 
-            "https://qmamicroservice.netlify.app"    
+            "https://qmamicroservice.netlify.app",
+            "https://api-gateway-production-4492.up.railway.app",  
+            "http://localhost:8080"                             
         ));
 
         config.addAllowedMethod("*");

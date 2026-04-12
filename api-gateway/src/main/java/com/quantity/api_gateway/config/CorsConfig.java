@@ -14,7 +14,11 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
 
        
-        config.setAllowedOrigins(List.of("http://localhost:4200"));
+        config.setAllowedOriginPatterns(List.of(
+            "http://localhost:4200",                 
+            "https://qmamicroservice.netlify.app"    
+        ));
+
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.setAllowCredentials(true);

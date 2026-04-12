@@ -9,21 +9,7 @@ spring:
           enabled: true
           lower-case-service-id: true
 
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOriginPatterns:
-              - "*"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-              - PATCH
-            allowedHeaders:
-              - "*"
-            allowCredentials: true
+      
 
       routes:
         - id: auth-service
@@ -68,7 +54,7 @@ eureka:
     register-with-eureka: true
 
   instance:
-    prefer-ip-address: true   # 🔥 changed (important for Railway)
+    prefer-ip-address: true
     instance-id: ${spring.application.name}:${PORT:8080}
 
 springdoc:

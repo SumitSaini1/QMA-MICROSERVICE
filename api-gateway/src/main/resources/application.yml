@@ -23,7 +23,7 @@ spring:
           predicates:
             - Path=/api/quantity/**
           filters:
-            - StripPrefix=2
+            - StripPrefix=0
 
         - id: auth-service-api-docs
           uri: lb://AUTH-SERVICE

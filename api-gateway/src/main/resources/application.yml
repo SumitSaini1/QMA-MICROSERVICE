@@ -9,6 +9,9 @@ spring:
           enabled: true
           lower-case-service-id: true
 
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
       routes:
         - id: auth-service
           uri: lb://AUTH-SERVICE
@@ -19,6 +22,8 @@ spring:
           uri: lb://QUANTITY-SERVICE
           predicates:
             - Path=/api/quantity/**
+          filters:
+            - StripPrefix=0
 
         - id: auth-service-api-docs
           uri: lb://AUTH-SERVICE
@@ -34,33 +39,24 @@ spring:
           filters:
             - RewritePath=/aggregate/quantity-service/v3/api-docs, /v3/api-docs
 
-      
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            allowedHeaders: "*"
-
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration
       - org.springframework.boot.autoconfigure.security.reactive.ReactiveUserDetailsServiceAutoConfiguration
 
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
+    fetch-registry: true
+    register-with-eureka: true
+
   instance:
     prefer-ip-address: true
+    instance-id: ${spring.application.name}:${PORT:8080}
 
 springdoc:
   swagger-ui:
@@ -74,9 +70,18 @@ springdoc:
 
   api-docs:
     path: /v3/api-docs
+    enabled: true
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: DEBUG

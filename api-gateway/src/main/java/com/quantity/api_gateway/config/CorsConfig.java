@@ -6,21 +6,30 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import java.util.*;
+
 @Configuration
 public class CorsConfig {
-
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
-    
-        config.setAllowedOriginPatterns(List.of("http://localhost:4200"));
+
+       
+        config.setAllowedOriginPatterns(List.of(
+            "http://localhost:4200",                 
+            "https://qmamicroservice.netlify.app",
+            "https://api-gateway-production-4492.up.railway.app",  
+            "http://localhost:8080"                             
+        ));
+
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.setAllowCredentials(true);
-    
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-    
+
         return new CorsWebFilter(source);
     }
+
+   
 }

@@ -30,8 +30,6 @@ spring:
           uri: lb://AUTH-SERVICE
           predicates:
             - Path=/auth/**
-          filters:
-            - StripPrefix=1
 
         - id: quantity-service
           uri: lb://QUANTITY-SERVICE
@@ -68,14 +66,10 @@ eureka:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
     fetch-registry: true
     register-with-eureka: true
+
   instance:
-    prefer-ip-address: false
-    hostname: ${RAILWAY_PRIVATE_DOMAIN:localhost}
-    non-secure-port: ${PORT:8080}
+    prefer-ip-address: true   # 🔥 changed (important for Railway)
     instance-id: ${spring.application.name}:${PORT:8080}
-    status-page-url: http://${RAILWAY_PRIVATE_DOMAIN:localhost}:${PORT:8080}/actuator/info
-    health-check-url: http://${RAILWAY_PRIVATE_DOMAIN:localhost}:${PORT:8080}/actuator/health
-    home-page-url: http://${RAILWAY_PRIVATE_DOMAIN:localhost}:${PORT:8080}/
 
 springdoc:
   swagger-ui:
@@ -86,6 +80,7 @@ springdoc:
         url: /aggregate/auth-service/v3/api-docs
       - name: quantity-service
         url: /aggregate/quantity-service/v3/api-docs
+
   api-docs:
     path: /v3/api-docs
     enabled: true

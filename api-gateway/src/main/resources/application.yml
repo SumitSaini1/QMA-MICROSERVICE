@@ -30,11 +30,15 @@ spring:
           uri: lb://AUTH-SERVICE
           predicates:
             - Path=/auth/**
+          filters:
+            - StripPrefix=1
 
         - id: quantity-service
           uri: lb://QUANTITY-SERVICE
           predicates:
             - Path=/api/quantity/**
+          filters:
+            - StripPrefix=2
 
         - id: auth-service-api-docs
           uri: lb://AUTH-SERVICE

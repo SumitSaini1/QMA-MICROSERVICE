@@ -20,7 +20,7 @@ public class SwaggerConfig {
 
                 return new OpenAPI()
 
-                                .servers(List.of(new Server().url("/auth")))
+                                .servers(List.of(new Server().url("/")))
 
                                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                                 .components(new Components()

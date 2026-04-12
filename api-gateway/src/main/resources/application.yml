@@ -34,19 +34,6 @@ spring:
           filters:
             - RewritePath=/aggregate/quantity-service/v3/api-docs, /v3/api-docs
 
-      
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins: "*"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            allowedHeaders: "*"
-
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.security.reactive.ReactiveSecurityAutoConfiguration
@@ -58,7 +45,7 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://${EUREKA_HOST:localhost}:8761/eureka
   instance:
     prefer-ip-address: true
 
@@ -71,7 +58,6 @@ springdoc:
         url: /aggregate/auth-service/v3/api-docs
       - name: quantity-service
         url: /aggregate/quantity-service/v3/api-docs
-
   api-docs:
     path: /v3/api-docs
 

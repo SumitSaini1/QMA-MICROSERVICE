@@ -9,6 +9,22 @@ spring:
           enabled: true
           lower-case-service-id: true
 
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOriginPatterns:
+              - "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
       routes:
         - id: auth-service
           uri: lb://AUTH-SERVICE
@@ -40,7 +56,7 @@ spring:
       - org.springframework.boot.autoconfigure.security.reactive.ReactiveUserDetailsServiceAutoConfiguration
 
 server:
-  port: ${PORT:8080}          # ← FIXED: was hardcoded 8080
+  port: ${PORT:8080}
 
 eureka:
   client:
@@ -49,10 +65,13 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
   instance:
-    prefer-ip-address: true
-    hostname: ${RAILWAY_PRIVATE_DOMAIN:localhost}        
-    non-secure-port: ${PORT:8080}                        
+    prefer-ip-address: false
+    hostname: ${RAILWAY_PRIVATE_DOMAIN:localhost}
+    non-secure-port: ${PORT:8080}
     instance-id: ${spring.application.name}:${PORT:8080}
+    status-page-url: http://${RAILWAY_PRIVATE_DOMAIN:localhost}:${PORT:8080}/actuator/info
+    health-check-url: http://${RAILWAY_PRIVATE_DOMAIN:localhost}:${PORT:8080}/actuator/health
+    home-page-url: http://${RAILWAY_PRIVATE_DOMAIN:localhost}:${PORT:8080}/
 
 springdoc:
   swagger-ui:
@@ -79,4 +98,4 @@ management:
 logging:
   level:
     root: INFO
-    org.springframework.cloud.gateway: DEBUG     
+    org.springframework.cloud.gateway: DEBUG

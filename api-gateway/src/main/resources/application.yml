@@ -40,14 +40,19 @@ spring:
       - org.springframework.boot.autoconfigure.security.reactive.ReactiveUserDetailsServiceAutoConfiguration
 
 server:
-  port: 8080
+  port: ${PORT:8080}          # ← FIXED: was hardcoded 8080
 
 eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
+    fetch-registry: true
+    register-with-eureka: true
   instance:
     prefer-ip-address: true
+    hostname: ${RAILWAY_PRIVATE_DOMAIN:localhost}        
+    non-secure-port: ${PORT:8080}                        
+    instance-id: ${spring.application.name}:${PORT:8080}
 
 springdoc:
   swagger-ui:
@@ -60,9 +65,18 @@ springdoc:
         url: /aggregate/quantity-service/v3/api-docs
   api-docs:
     path: /v3/api-docs
+    enabled: true
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.gateway: DEBUG     

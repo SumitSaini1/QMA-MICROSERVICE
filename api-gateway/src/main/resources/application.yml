@@ -56,7 +56,8 @@ eureka:
 
   instance:
     prefer-ip-address: true
-    instance-id: ${spring.application.name}:${PORT:8080}
+    hostname: ${HOST_IP:localhost}
+    instance-id: ${spring.application.name}:${HOST_IP:localhost}:${PORT:8080}
 
 springdoc:
   swagger-ui:
